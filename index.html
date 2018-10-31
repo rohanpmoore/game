@@ -23,7 +23,44 @@
             <input type="text" id="playerTwoName">
           </div>
         </div>
+        <button type="submit" id="startBtn">Start Game</button>
       </form>
+      <p class="error" id="noNameGiven">One or both names was left blank, please try again.</p>
+      <div id="gameBoard">
+        <div class="row">
+          <div class="col-sm-3 col-sm-offset-2">
+            <h3 id="playerOneNameBox">Score: </h3>
+            <p class="scorebox" id="playerOneScore">0</p>
+          </div>
+          <div class="col-sm-3 col-sm-offset-2">
+            <h3 id="playerTwoNameBox">Score: </h3>
+            <p class="scorebox" id="playerTwoScore">0</p>
+          </div>
+        </div>
+        <div class="row" id="turnTotals">
+          <div class="col-sm-3 col-sm-offset-2">
+            <h3>Your Roll: </h3>
+            <p class="scorebox" id="currentRoll">0</p>
+          </div>
+          <div class="col-sm-3 col-sm-offset-2">
+            <h3>Turn Total: </h3>
+            <p class="scorebox" id="turnTotal">0</p>
+          </div>
+        </div>
+        <div class="row" id="gameButtons">
+          <div class="col-sm-3 col-sm-offset-2">
+            <button type="button" id="roll">Roll</button>
+          </div>
+          <div class="col-sm-3 col-sm-offset-2">
+            <button type="button" id="hold">Hold</button>
+          </div>
+        </div>
+        <p id="gameStatus"></p>
+      </div>
+      <div id="gameEnd">
+        <p id="endStatus"></p>
+        <button type="button" id="newGame">New Game!</button>
+      </div>
     </div>
   </body>
 </html>

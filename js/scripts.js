@@ -1,3 +1,5 @@
+const TO_WIN = 20;
+
 function Player(name) {
   this.name = name;
   this.score = 0;
@@ -46,20 +48,20 @@ Game.prototype.roll = function() {
   if(rollValue === 1) {
     this.resetTotal();
     this.nextTurn();
-    return;
+    return 1;
   }
   this.currentTotal += rollValue;
-  return this.currentTotal;
+  return rollValue;
 }
 
 Game.prototype.checkForWinner = function() {
   if(this.currentTurn === "playerOne") {
-    if((this.playerOne).score >= 100) {
-      return "Player One Wins with " + (this.playerOne).score + " points!";
+    if((this.playerOne).score >= TO_WIN) {
+      return (this.playerOne).name + " wins with " + (this.playerOne).score + " points!";
     }
   } else {
-    if((this.playerTwo).score >= 100) {
-      return "Player Two Wins with " + (this.playerTwo).score + " points!";
+    if((this.playerTwo).score >= TO_WIN) {
+      return (this.playerTwo).name + " wins with " + (this.playerTwo).score + " points!";
     }
   }
   return "Next Player";
@@ -71,3 +73,61 @@ Game.prototype.newGame = function() {
   (this.playerOne).score = 0;
   (this.playerTwo).score = 0;
 }
+
+$(document).ready(function() {
+  var game = new Game("Placeholder1", "Placeholder2");
+  $("#namesForm").submit(function(event) {
+    event.preventDefault();
+    var nameOne = $("#playerOneName").val();
+    var nameTwo = $("#playerTwoName").val();
+    if(!nameOne || !nameTwo) {
+      $("#noNameGiven").show();
+      return;
+    }
+    $("#noNameGiven").hide();
+    $("#namesForm").hide();
+    $("#gameBoard").show();
+    game = new Game(nameOne, nameTwo);
+    $("#gameStatus").text("Welcome to Pig Dice!  " + (game.playerOne).name + ", it's your turn!");
+    $("#playerOneNameBox").prepend(nameOne + "'s ");
+    $("#playerTwoNameBox").prepend(nameTwo + "'s ");
+  });
+  $("#roll").click(function() {
+    var roll = game.roll();
+    if(game.currentTotal === 0) {
+      $("#gameStatus").text("Too bad!  You rolled a one!")
+      if(game.currentTurn === "playerOne") {
+        $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
+      } else {
+        $("#gameStatus").append("  " + (game.playerTwo).name + ", it's your turn!");
+      }
+      $("#turnTotal").text("0");
+      $("#currentRoll").text("1");
+    } else {
+      $("#gameStatus").text("You rolled a " + roll + "!  Would you like to roll again or hold?");
+      $("#turnTotal").text((game.currentTotal).toString());
+      $("#currentRoll").text(roll.toString());
+    }
+  });
+  $("#hold").click(function() {
+    var output = game.nextTurn();
+    $("#playerOneScore").text(((game.playerOne).score).toString())
+    $("#playerTwoScore").text(((game.playerTwo).score).toString())
+    if(output) {
+      $("#turnTotals").hide();
+      $("#gameButtons").hide();
+      $("#gameEnd").show();
+      $("#gameStatus").hide();
+      $("#endStatus").text(output);
+    } else {
+      $("#gameStatus").text("You have ended your turn!");
+      $("#turnTotal").text("0");
+      $("#currentRoll").text("0");
+      if(game.currentTurn === "playerOne") {
+        $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
+      } else {
+        $("#gameStatus").append("  " + (game.playerTwo).name + ", it's your turn!");
+      }
+    }
+  });
+});

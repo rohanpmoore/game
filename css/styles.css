@@ -5,3 +5,16 @@ h1 {
 h3 {
   text-align: center;
 }
+
+#gameBoard {
+  display: none;
+}
+
+#gameEnd {
+  display: none;
+}
+
+.error {
+  display: none;
+  color: red;
+}
