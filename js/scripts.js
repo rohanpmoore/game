@@ -1,4 +1,4 @@
-const TO_WIN = 100;
+const TO_WIN = 20;
 
 function Player(name) {
   this.name = name;
@@ -30,10 +30,8 @@ Game.prototype.nextTurn = function() {
   this.pushTotal();
   this.resetTotal();
   var winner = this.checkForWinner();
-  $("#playerOneScore").text(((this.playerOne).score).toString());
-  $("#playerTwoScore").text(((this.playerTwo).score).toString());
   if(winner != "Next Player") {
-    return winner;
+    hold(this, winner);
   }
   if(this.currentTurn === "playerOne") {
     this.currentTurn = "playerTwo";
@@ -43,7 +41,7 @@ Game.prototype.nextTurn = function() {
   } else {
     this.currentTurn = "playerOne";
   }
-  return "";
+  hold(this, "");
 }
 
 Game.prototype.pushTotal = function() {
@@ -59,10 +57,11 @@ Game.prototype.roll = function() {
   if(rollValue === 1) {
     this.resetTotal();
     this.nextTurn();
-    return 1;
+    rollDice(this, 1);
+  } else {
+    this.currentTotal += rollValue;
+    rollDice(this, rollValue);
   }
-  this.currentTotal += rollValue;
-  return rollValue;
 }
 
 Game.prototype.checkForWinner = function() {
@@ -81,9 +80,8 @@ Game.prototype.newGame = function() {
   (this.playerTwo).score = 0;
 }
 
-function rollDice(game) {
-  var roll = game.roll();
-  if(game.currentTotal === 0) {
+function rollDice(game, roll) {
+  if(roll === 1) {
     $("#gameStatus").text("Too bad!  You rolled a one!")
     if(game.currentTurn === "playerOne") {
       $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
@@ -99,8 +97,9 @@ function rollDice(game) {
   }
 }
 
-function hold(game) {
-  var output = game.nextTurn();
+function hold(game, output) {
+  $("#playerOneScore").text(((game.playerOne).score).toString());
+  $("#playerTwoScore").text(((game.playerTwo).score).toString());
   if(output) {
     $("#turnTotals").hide();
     $("#gameButtons").hide();
@@ -141,10 +140,10 @@ $(document).ready(function() {
     $("#playerTwoNameBox").prepend((game.playerTwo).name + "'s ");
   });
   $("#roll").click(function() {
-    rollDice(game);
+    game.roll();
   });
   $("#hold").click(function() {
-    hold(game);
+    game.nextTurn();
   });
   $("#newGame").click(function() {
     game.newGame();
