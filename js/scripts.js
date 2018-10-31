@@ -12,9 +12,14 @@ Player.prototype.addScore = function(amount) {
 function Game(playerOneName, playerTwoName = "Computer") {
   this.playerOne = new Player(playerOneName);
   this.playerTwo = new Player(playerTwoName);
-  debugger;
   this.currentTurn = "playerOne";
   this.currentTotal = 0;
+}
+
+Game.prototype.AITurn = function() {
+  this.roll();
+  this.roll();
+  this.nextTurn();
 }
 
 Game.prototype.resetTotal = function() {
@@ -25,11 +30,16 @@ Game.prototype.nextTurn = function() {
   this.pushTotal();
   this.resetTotal();
   var winner = this.checkForWinner();
+  $("#playerOneScore").text(((this.playerOne).score).toString());
+  $("#playerTwoScore").text(((this.playerTwo).score).toString());
   if(winner != "Next Player") {
     return winner;
   }
   if(this.currentTurn === "playerOne") {
     this.currentTurn = "playerTwo";
+    if((this.playerTwo).name === "Computer") {
+      this.AITurn();
+    }
   } else {
     this.currentTurn = "playerOne";
   }
@@ -56,14 +66,10 @@ Game.prototype.roll = function() {
 }
 
 Game.prototype.checkForWinner = function() {
-  if(this.currentTurn === "playerOne") {
-    if((this.playerOne).score >= TO_WIN) {
-      return (this.playerOne).name + " wins with " + (this.playerOne).score + " points!";
-    }
-  } else {
-    if((this.playerTwo).score >= TO_WIN) {
-      return (this.playerTwo).name + " wins with " + (this.playerTwo).score + " points!";
-    }
+  if((this.playerOne).score >= TO_WIN) {
+    return (this.playerOne).name + " wins with " + (this.playerOne).score + " points!";
+  } else if((this.playerTwo).score >= TO_WIN) {
+    return (this.playerTwo).name + " wins with " + (this.playerTwo).score + " points!";
   }
   return "Next Player";
 }
@@ -95,8 +101,6 @@ function rollDice(game) {
 
 function hold(game) {
   var output = game.nextTurn();
-  $("#playerOneScore").text(((game.playerOne).score).toString())
-  $("#playerTwoScore").text(((game.playerTwo).score).toString())
   if(output) {
     $("#turnTotals").hide();
     $("#gameButtons").hide();
