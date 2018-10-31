@@ -9,9 +9,10 @@ Player.prototype.addScore = function(amount) {
   this.score += amount;
 }
 
-function Game(playerOneName, playerTwoName) {
+function Game(playerOneName, playerTwoName = "Computer") {
   this.playerOne = new Player(playerOneName);
   this.playerTwo = new Player(playerTwoName);
+  debugger;
   this.currentTurn = "playerOne";
   this.currentTotal = 0;
 }
@@ -74,7 +75,7 @@ Game.prototype.newGame = function() {
   (this.playerTwo).score = 0;
 }
 
-function roll() {
+function rollDice(game) {
   var roll = game.roll();
   if(game.currentTotal === 0) {
     $("#gameStatus").text("Too bad!  You rolled a one!")
@@ -92,7 +93,7 @@ function roll() {
   }
 }
 
-function hold() {
+function hold(game) {
   var output = game.nextTurn();
   $("#playerOneScore").text(((game.playerOne).score).toString())
   $("#playerTwoScore").text(((game.playerTwo).score).toString())
@@ -120,23 +121,26 @@ $(document).ready(function() {
     event.preventDefault();
     var nameOne = $("#playerOneName").val();
     var nameTwo = $("#playerTwoName").val();
-    if(!nameOne || !nameTwo) {
+    if(!nameOne) {
       $("#noNameGiven").show();
       return;
+    } else if(!nameTwo) {
+      game = new Game(nameOne);
+    } else {
+      game = new Game(nameOne, nameTwo);
     }
     $("#noNameGiven").hide();
     $("#namesForm").hide();
     $("#gameBoard").show();
-    game = new Game(nameOne, nameTwo);
     $("#gameStatus").text("Welcome to Pig Dice!  " + (game.playerOne).name + ", it's your turn!");
-    $("#playerOneNameBox").prepend(nameOne + "'s ");
-    $("#playerTwoNameBox").prepend(nameTwo + "'s ");
+    $("#playerOneNameBox").prepend((game.playerOne).name + "'s ");
+    $("#playerTwoNameBox").prepend((game.playerTwo).name + "'s ");
   });
   $("#roll").click(function() {
-    roll();
+    rollDice(game);
   });
   $("#hold").click(function() {
-    hold();
+    hold(game);
   });
   $("#newGame").click(function() {
     game.newGame();
