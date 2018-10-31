@@ -20,6 +20,10 @@ input {
   display: none;
 }
 
+#workaround {
+  display: none;
+}
+
 .error {
   display: none;
   color: red;

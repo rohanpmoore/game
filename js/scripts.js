@@ -1,4 +1,4 @@
-const TO_WIN = 20;
+const TO_WIN = 100;
 
 function Player(name) {
   this.name = name;
@@ -17,8 +17,14 @@ function Game(playerOneName, playerTwoName = "Computer") {
 }
 
 Game.prototype.AITurn = function() {
-  this.roll();
-  this.roll();
+  this.AIRoll();
+  if(this.currentTotal === 0) {
+    return;
+  }
+  this.AIRoll();
+  if(this.currentTotal === 0) {
+    return;
+  }
   this.nextTurn();
 }
 
@@ -27,12 +33,14 @@ Game.prototype.resetTotal = function() {
 }
 
 Game.prototype.nextTurn = function() {
+  $("#workaround").hide();
   this.pushTotal();
-  this.resetTotal();
   var winner = this.checkForWinner();
   if(winner != "Next Player") {
     hold(this, winner);
   }
+  hold(this, "");
+  this.resetTotal();
   if(this.currentTurn === "playerOne") {
     this.currentTurn = "playerTwo";
     if((this.playerTwo).name === "Computer") {
@@ -41,7 +49,6 @@ Game.prototype.nextTurn = function() {
   } else {
     this.currentTurn = "playerOne";
   }
-  hold(this, "");
 }
 
 Game.prototype.pushTotal = function() {
@@ -52,12 +59,31 @@ Game.prototype.pushTotal = function() {
   }
 }
 
-Game.prototype.roll = function() {
+Game.prototype.AIRoll = function() {
   var rollValue = Math.floor(Math.random() * 6 + 1);
   if(rollValue === 1) {
     this.resetTotal();
     this.nextTurn();
-    rollDice(this, 1);
+    rollAIDice(this, 1);
+  } else {
+    this.currentTotal += rollValue;
+    rollAIDice(this, rollValue);
+  }
+}
+
+Game.prototype.roll = function() {
+  $("#workaround").hide();
+  var rollValue = Math.floor(Math.random() * 6 + 1);
+  if(rollValue === 1) {
+    this.resetTotal();
+    this.nextTurn();
+    if((this.playerTwo).name === "Computer") {
+      $("#workaround").show();
+      $("#turnTotal").text("0");
+      $("#currentRoll").text("0");
+    } else {
+      rollDice(this, 1);
+    }
   } else {
     this.currentTotal += rollValue;
     rollDice(this, rollValue);
@@ -78,6 +104,19 @@ Game.prototype.newGame = function() {
   this.currentTotal = 0;
   (this.playerOne).score = 0;
   (this.playerTwo).score = 0;
+}
+
+function rollAIDice(game, roll) {
+  if(roll === 1) {
+    $("#gameStatus").text("The computer rolled a one!")
+    $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
+    $("#turnTotal").text("0");
+    $("#currentRoll").text("1");
+  } else {
+    $("#gameStatus").text("Computer rolled a " + roll + "!");
+    $("#turnTotal").text((game.currentTotal).toString());
+    $("#currentRoll").text(roll.toString());
+  }
 }
 
 function rollDice(game, roll) {
@@ -107,13 +146,19 @@ function hold(game, output) {
     $("#gameStatus").hide();
     $("#endStatus").text(output);
   } else {
-    $("#gameStatus").text("You have ended your turn!");
+    var playerName = "";
+    if(game.currentTurn === "playerOne") {
+      playerName =(game.playerOne).name;
+    } else {
+      playerName = (game.playerTwo).name
+    }
+    $("#gameStatus").text(playerName + " has ended their turn with " + game.currentTotal + " points!");
     $("#turnTotal").text("0");
     $("#currentRoll").text("0");
     if(game.currentTurn === "playerOne") {
-      $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
+      $("#gameStatus").append(" " + (game.playerTwo).name + ", it's your turn!")
     } else {
-      $("#gameStatus").append("  " + (game.playerTwo).name + ", it's your turn!");
+      $("#gameStatus").append(" " + (game.playerOne).name + ", it's your turn!")
     }
   }
 }
