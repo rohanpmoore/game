@@ -1,4 +1,4 @@
-const TO_WIN = 100;
+const TO_WIN = 1;
 
 function Player(name) {
   this.name = name;
@@ -131,6 +131,7 @@ $(document).ready(function() {
     }
   });
   $("#newGame").click(function() {
+    game.newGame();
     $("#turnTotals").show();
     $("#gameButtons").show();
     $("#gameEnd").hide();

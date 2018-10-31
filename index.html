@@ -10,7 +10,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Pig Dice</h1>
+      <h1 class="jumbotron">Pig Dice</h1>
       <form id="namesForm">
         <h3>Input player names to continue!</h3>
         <div class="row">
@@ -29,7 +29,7 @@
       <div id="gameBoard">
         <div class="row">
           <div class="col-sm-3 col-sm-offset-2">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
               <div class="panel-heading">
                 <h3 id="playerOneNameBox">Score: </h3>
               </div>
@@ -39,7 +39,7 @@
             </div>
           </div>
           <div class="col-sm-3 col-sm-offset-2">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
               <div class="panel-heading">
                 <h3 id="playerTwoNameBox">Score: </h3>
               </div>
@@ -51,7 +51,7 @@
         </div>
         <div class="row" id="turnTotals">
           <div class="col-sm-3 col-sm-offset-2">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
               <div class="panel-heading">
                 <h3>Your Roll: </h3>
               </div>
@@ -61,7 +61,7 @@
             </div>
           </div>
           <div class="col-sm-3 col-sm-offset-2">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
               <div class="panel-heading">
                 <h3>Turn Total: </h3>
               </div>
@@ -79,10 +79,10 @@
             <button type="button" id="hold">Hold</button>
           </div>
         </div>
-        <p id="gameStatus"></p>
+        <p id="gameStatus" class="info-text"></p>
       </div>
       <div id="gameEnd">
-        <p id="endStatus"></p>
+        <p id="endStatus" class="info-text"></p>
         <button type="button" id="newGame">New Game!</button>
       </div>
     </div>
