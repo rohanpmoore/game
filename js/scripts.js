@@ -1,4 +1,4 @@
-const TO_WIN = 1;
+const TO_WIN = 100;
 
 function Player(name) {
   this.name = name;
