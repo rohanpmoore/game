@@ -130,4 +130,15 @@ $(document).ready(function() {
       }
     }
   });
+  $("#newGame").click(function() {
+    $("#turnTotals").show();
+    $("#gameButtons").show();
+    $("#gameEnd").hide();
+    $("#gameStatus").show();
+    $("#gameStatus").text("Welcome to Pig Dice!  " + (game.playerOne).name + ", it's your turn!");
+    $("#playerOneScore").text("0");
+    $("#playerTwoScore").text("0");
+    $("#currentRoll").text("0");
+    $("#turnTotal").text("0");
+  });
 });
