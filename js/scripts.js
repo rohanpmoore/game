@@ -74,6 +74,46 @@ Game.prototype.newGame = function() {
   (this.playerTwo).score = 0;
 }
 
+function roll() {
+  var roll = game.roll();
+  if(game.currentTotal === 0) {
+    $("#gameStatus").text("Too bad!  You rolled a one!")
+    if(game.currentTurn === "playerOne") {
+      $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
+    } else {
+      $("#gameStatus").append("  " + (game.playerTwo).name + ", it's your turn!");
+    }
+    $("#turnTotal").text("0");
+    $("#currentRoll").text("1");
+  } else {
+    $("#gameStatus").text("You rolled a " + roll + "!  Would you like to roll again or hold?");
+    $("#turnTotal").text((game.currentTotal).toString());
+    $("#currentRoll").text(roll.toString());
+  }
+}
+
+function hold() {
+  var output = game.nextTurn();
+  $("#playerOneScore").text(((game.playerOne).score).toString())
+  $("#playerTwoScore").text(((game.playerTwo).score).toString())
+  if(output) {
+    $("#turnTotals").hide();
+    $("#gameButtons").hide();
+    $("#gameEnd").show();
+    $("#gameStatus").hide();
+    $("#endStatus").text(output);
+  } else {
+    $("#gameStatus").text("You have ended your turn!");
+    $("#turnTotal").text("0");
+    $("#currentRoll").text("0");
+    if(game.currentTurn === "playerOne") {
+      $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
+    } else {
+      $("#gameStatus").append("  " + (game.playerTwo).name + ", it's your turn!");
+    }
+  }
+}
+
 $(document).ready(function() {
   var game = new Game("Placeholder1", "Placeholder2");
   $("#namesForm").submit(function(event) {
@@ -93,42 +133,10 @@ $(document).ready(function() {
     $("#playerTwoNameBox").prepend(nameTwo + "'s ");
   });
   $("#roll").click(function() {
-    var roll = game.roll();
-    if(game.currentTotal === 0) {
-      $("#gameStatus").text("Too bad!  You rolled a one!")
-      if(game.currentTurn === "playerOne") {
-        $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
-      } else {
-        $("#gameStatus").append("  " + (game.playerTwo).name + ", it's your turn!");
-      }
-      $("#turnTotal").text("0");
-      $("#currentRoll").text("1");
-    } else {
-      $("#gameStatus").text("You rolled a " + roll + "!  Would you like to roll again or hold?");
-      $("#turnTotal").text((game.currentTotal).toString());
-      $("#currentRoll").text(roll.toString());
-    }
+    roll();
   });
   $("#hold").click(function() {
-    var output = game.nextTurn();
-    $("#playerOneScore").text(((game.playerOne).score).toString())
-    $("#playerTwoScore").text(((game.playerTwo).score).toString())
-    if(output) {
-      $("#turnTotals").hide();
-      $("#gameButtons").hide();
-      $("#gameEnd").show();
-      $("#gameStatus").hide();
-      $("#endStatus").text(output);
-    } else {
-      $("#gameStatus").text("You have ended your turn!");
-      $("#turnTotal").text("0");
-      $("#currentRoll").text("0");
-      if(game.currentTurn === "playerOne") {
-        $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
-      } else {
-        $("#gameStatus").append("  " + (game.playerTwo).name + ", it's your turn!");
-      }
-    }
+    hold();
   });
   $("#newGame").click(function() {
     game.newGame();
