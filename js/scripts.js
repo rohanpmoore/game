@@ -212,7 +212,7 @@ $(document).ready(function() {
     event.preventDefault();
     var nameOne = $("#playerOneName").val();
     var nameTwo = $("#playerTwoName").val();
-    if(!nameOne) {
+    if(!nameOne || nameOne === "Computer" || nameTwo === "Computer") {
       $("#noNameGiven").show();
       return;
     } else if(!nameTwo) {
