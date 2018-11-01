@@ -154,7 +154,7 @@ function rollAIDice(game, roll) {
     $("#gameStatus").text("The computer rolled a one!")
     $("#gameStatus").append("  " + (game.playerOne).name + ", it's your turn!");
     $("#turnTotal").text("0");
-    $("#currentRoll").text("1");
+    $("#currentRoll").text("0");
   } else {
     $("#gameStatus").text("Computer rolled a " + roll + "!");
     $("#turnTotal").text((game.currentTotal).toString());

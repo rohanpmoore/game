@@ -36,6 +36,10 @@ input {
   color: black;
 }
 
+#namesForm input {
+  color: black;
+}
+
 .error {
   display: none;
   color: red;
