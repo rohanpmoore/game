@@ -1,6 +1,7 @@
 body {
   text-align: center;
   background-color: lightyellow;
+  text-shadow: 2px 2px white;
 }
 
 button {
@@ -24,6 +25,17 @@ input {
   display: none;
 }
 
+#namesForm {
+  background-color: #d9edf7;
+  color: #31708f;
+  border: solid 1px #bce8f1;
+  text-shadow: 2px 2px white;
+}
+
+#namesForm button {
+  color: black;
+}
+
 .error {
   display: none;
   color: red;
@@ -39,4 +51,5 @@ input {
   background-color: #d9edf7;
   color: #31708f;
   border: solid 1px #bce8f1;
+  text-shadow: 2px 2px white;
 }
