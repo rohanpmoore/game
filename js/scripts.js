@@ -17,15 +17,37 @@ function Game(playerOneName, playerTwoName = "Computer") {
 }
 
 Game.prototype.AITurn = function() {
-  this.AIRoll();
-  if(this.currentTotal === 0) {
-    return;
+  switch(Math.floor(Math.random() * 5)) {
+    case 0:
+      while(this.currentTotal < 20) {
+        this.AIRoll();
+        if(this.currentTotal === 0) {
+          return;
+        }
+      }
+      this.nextTurn();
+      break;
+    case 1:
+      for(var i = 0; i < 5; i++) {
+        this.AIRoll();
+        if(this.currentTotal === 0) {
+          return;
+        }
+      }
+      this.nextTurn();
+      break;
+    default:
+      this.AIRoll();
+      if(this.currentTotal === 0) {
+        return;
+      }
+      this.AIRoll();
+      if(this.currentTotal === 0) {
+        return;
+      }
+      this.nextTurn();
+      break;
   }
-  this.AIRoll();
-  if(this.currentTotal === 0) {
-    return;
-  }
-  this.nextTurn();
 }
 
 Game.prototype.resetTotal = function() {
@@ -38,16 +60,17 @@ Game.prototype.nextTurn = function() {
   var winner = this.checkForWinner();
   if(winner != "Next Player") {
     hold(this, winner);
-  }
-  hold(this, "");
-  this.resetTotal();
-  if(this.currentTurn === "playerOne") {
-    this.currentTurn = "playerTwo";
-    if((this.playerTwo).name === "Computer") {
-      this.AITurn();
-    }
   } else {
-    this.currentTurn = "playerOne";
+    hold(this, "");
+    this.resetTotal();
+    if(this.currentTurn === "playerOne") {
+      this.currentTurn = "playerTwo";
+      if((this.playerTwo).name === "Computer") {
+        this.AITurn();
+      }
+    } else {
+      this.currentTurn = "playerOne";
+    }
   }
 }
 
